@@ -2,15 +2,15 @@
 
 namespace Zbiller\Revisions\Tests;
 
+use Zbiller\Revisions\Models\Revision;
+use Zbiller\Revisions\Tests\Models\Tag;
+use Zbiller\Revisions\Tests\Models\Post;
+use Zbiller\Revisions\Tests\Models\Comment;
+use Zbiller\Revisions\Options\RevisionOptions;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Zbiller\Revisions\Models\Revision;
-use Zbiller\Revisions\Options\RevisionOptions;
-use Zbiller\Revisions\Tests\Models\Comment;
-use Zbiller\Revisions\Tests\Models\Post;
-use Zbiller\Revisions\Tests\Models\Tag;
 
 class HasRevisionsTest extends TestCase
 {
@@ -381,8 +381,8 @@ class HasRevisionsTest extends TestCase
 
         for ($i = 1; $i <= 3; $i++) {
             $this->post->comments()->limit(1)->offset($i - 1)->first()->update([
-                'title' => 'Comment title ' . $i . ' updated',
-                'content' => 'Comment content ' . $i . ' updated',
+                'title' => 'Comment title '.$i.' updated',
+                'content' => 'Comment content '.$i.' updated',
                 'active' => false,
             ]);
         }
@@ -392,12 +392,12 @@ class HasRevisionsTest extends TestCase
         for ($i = 1; $i <= 3; $i++) {
             $comment = $this->post->fresh()->comments()->limit(1)->offset($i - 1)->first();
 
-            $this->assertEquals('Comment title ' . $i . ' updated', $comment->title);
-            $this->assertEquals('Comment content ' . $i . ' updated', $comment->content);
+            $this->assertEquals('Comment title '.$i.' updated', $comment->title);
+            $this->assertEquals('Comment content '.$i.' updated', $comment->content);
             $this->assertEquals(0, $comment->active);
 
-            $this->assertEquals('Comment title ' . $i, $revision->metadata['relations']['comments']['records']['items'][$i - 1]['title']);
-            $this->assertEquals('Comment content ' . $i, $revision->metadata['relations']['comments']['records']['items'][$i - 1]['content']);
+            $this->assertEquals('Comment title '.$i, $revision->metadata['relations']['comments']['records']['items'][$i - 1]['title']);
+            $this->assertEquals('Comment content '.$i, $revision->metadata['relations']['comments']['records']['items'][$i - 1]['content']);
             $this->assertEquals(1, $revision->metadata['relations']['comments']['records']['items'][$i - 1]['active']);
         }
     }
@@ -417,8 +417,8 @@ class HasRevisionsTest extends TestCase
 
         for ($i = 1; $i <= 3; $i++) {
             $this->post->comments()->limit(1)->offset($i - 1)->first()->update([
-                'title' => 'Comment title ' . $i . ' updated',
-                'content' => 'Comment content ' . $i . ' updated',
+                'title' => 'Comment title '.$i.' updated',
+                'content' => 'Comment content '.$i.' updated',
                 'active' => false,
             ]);
         }
@@ -430,8 +430,8 @@ class HasRevisionsTest extends TestCase
         for ($i = 1; $i <= 3; $i++) {
             $comment = $this->post->fresh()->comments()->limit(1)->offset($i - 1)->first();
 
-            $this->assertEquals('Comment title ' . $i, $comment->title);
-            $this->assertEquals('Comment content ' . $i, $comment->content);
+            $this->assertEquals('Comment title '.$i, $comment->title);
+            $this->assertEquals('Comment content '.$i, $comment->content);
             $this->assertEquals(1, $comment->active);
         }
     }

@@ -3,11 +3,11 @@
 namespace Zbiller\Revisions;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Zbiller\Revisions\Contracts\RevisionModelContract;
 use Zbiller\Revisions\Models\Revision;
+use Illuminate\Contracts\Foundation\Application;
+use Zbiller\Revisions\Contracts\RevisionModelContract;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -49,7 +49,7 @@ class ServiceProvider extends BaseServiceProvider
     protected function publishConfigs()
     {
         $this->publishes([
-            __DIR__ . '/../config/revisions.php' => config_path('revisions.php'),
+            __DIR__.'/../config/revisions.php' => config_path('revisions.php'),
         ], 'config');
     }
 

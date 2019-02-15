@@ -3,13 +3,13 @@
 namespace Zbiller\Revisions\Tests;
 
 use Carbon\Carbon;
-use Orchestra\Testbench\TestCase as Orchestra;
-use Illuminate\Contracts\Foundation\Application;
-use Zbiller\Revisions\Tests\Models\Author;
-use Zbiller\Revisions\Tests\Models\Comment;
+use Zbiller\Revisions\Tests\Models\Tag;
 use Zbiller\Revisions\Tests\Models\Post;
 use Zbiller\Revisions\Tests\Models\Reply;
-use Zbiller\Revisions\Tests\Models\Tag;
+use Zbiller\Revisions\Tests\Models\Author;
+use Zbiller\Revisions\Tests\Models\Comment;
+use Orchestra\Testbench\TestCase as Orchestra;
+use Illuminate\Contracts\Foundation\Application;
 
 abstract class TestCase extends Orchestra
 {
@@ -64,7 +64,7 @@ abstract class TestCase extends Orchestra
 
         for ($i = 1; $i <= 3; $i++) {
             Tag::create([
-                'name' => 'Tag name ' . $i,
+                'name' => 'Tag name '.$i,
             ]);
         }
 
@@ -93,8 +93,8 @@ abstract class TestCase extends Orchestra
             $this->post->comments()->create([
                 'id' => $i,
                 'post_id' => $this->post->id,
-                'title' => 'Comment title ' . $i,
-                'content' => 'Comment content ' . $i,
+                'title' => 'Comment title '.$i,
+                'content' => 'Comment content '.$i,
                 'date' => Carbon::now(),
                 'active' => true,
             ]);
