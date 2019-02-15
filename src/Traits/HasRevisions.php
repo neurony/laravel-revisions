@@ -4,13 +4,13 @@ namespace Zbiller\Revisions\Traits;
 
 use Closure;
 use Exception;
+use Illuminate\Support\Facades\DB;
+use Zbiller\Revisions\Models\Revision;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
-use Zbiller\Revisions\Contracts\RevisionModelContract;
 use Zbiller\Revisions\Helpers\RelationHelper;
-use Zbiller\Revisions\Models\Revision;
 use Zbiller\Revisions\Options\RevisionOptions;
+use Zbiller\Revisions\Contracts\RevisionModelContract;
 
 trait HasRevisions
 {
@@ -101,7 +101,7 @@ trait HasRevisions
         }
 
         try {
-            if (!$this->shouldCreateRevision()) {
+            if (! $this->shouldCreateRevision()) {
                 return false;
             }
 
@@ -252,7 +252,7 @@ trait HasRevisions
             return false;
         }
 
-        if ($fields && is_array($fields) && !empty($fields)) {
+        if ($fields && is_array($fields) && ! empty($fields)) {
             return $this->isDirty($fields);
         }
 
@@ -307,9 +307,9 @@ trait HasRevisions
             unset($data[$this->getUpdatedAtColumn()]);
         }
 
-        if ($fields && is_array($fields) && !empty($fields)) {
+        if ($fields && is_array($fields) && ! empty($fields)) {
             foreach ($data as $field => $value) {
-                if (!in_array($field, $fields)) {
+                if (! in_array($field, $fields)) {
                     unset($data[$field]);
                 }
             }
@@ -340,7 +340,7 @@ trait HasRevisions
         ];
 
         foreach ($this->{$relation}()->get() as $index => $model) {
-            if (!$data['records']['primary_key'] || !$data['records']['foreign_key']) {
+            if (! $data['records']['primary_key'] || ! $data['records']['foreign_key']) {
                 $data['records']['primary_key'] = $model->getKeyName();
                 $data['records']['foreign_key'] = $this->getForeignKey();
             }
@@ -386,7 +386,7 @@ trait HasRevisions
             $pivot = $model->pivot;
 
             foreach ($model->getOriginal() as $field => $value) {
-                if (!$data['records']['primary_key'] || !$data['records']['foreign_key']) {
+                if (! $data['records']['primary_key'] || ! $data['records']['foreign_key']) {
                     $data['records']['primary_key'] = $model->getKeyName();
                     $data['records']['foreign_key'] = $this->getForeignKey();
                 }
@@ -397,7 +397,7 @@ trait HasRevisions
             }
 
             foreach ($pivot->getOriginal() as $field => $value) {
-                if (!$data['pivots']['primary_key'] || !$data['pivots']['foreign_key'] || !$data['pivots']['related_key']) {
+                if (! $data['pivots']['primary_key'] || ! $data['pivots']['foreign_key'] || ! $data['pivots']['related_key']) {
                     $data['pivots']['primary_key'] = $pivot->getKeyName();
                     $data['pivots']['foreign_key'] = $pivot->getForeignKey();
                     $data['pivots']['related_key'] = $pivot->getRelatedKey();
@@ -504,7 +504,8 @@ trait HasRevisions
                 }
 
                 $rel->save();
-            } if (array_key_exists(SoftDeletes::class, class_uses($rel))) {
+            }
+            if (array_key_exists(SoftDeletes::class, class_uses($rel))) {
                 $rel->{$rel->getDeletedAtColumn()} = null;
                 $rel->save();
             }
@@ -515,7 +516,7 @@ trait HasRevisions
         foreach ($attributes['pivots']['items'] as $item) {
             $this->{$relation}()->attach(
                 $item[$attributes['pivots']['related_key']],
-                array_except((array)$item, [
+                array_except((array) $item, [
                     $attributes['pivots']['primary_key'],
                     $attributes['pivots']['foreign_key'],
                     $attributes['pivots']['related_key'],

@@ -2,9 +2,9 @@
 
 namespace Zbiller\Revisions\Models;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Zbiller\Revisions\Contracts\RevisionModelContract;
 
 class Revision extends Model implements RevisionModelContract
@@ -34,7 +34,7 @@ class Revision extends Model implements RevisionModelContract
      * @var array
      */
     protected $casts = [
-        'metadata' => 'array'
+        'metadata' => 'array',
     ];
 
     /**

@@ -60,7 +60,7 @@ class RevisionOptions
         }
 
         throw new Exception(
-            'The property "' . $name . '" does not exist in class "' . static::class . '"'
+            'The property "'.$name.'" does not exist in class "'.static::class.'"'
         );
     }
 
@@ -94,7 +94,7 @@ class RevisionOptions
      */
     public function limitRevisionsTo(int $limit): self
     {
-        $this->revisionLimit = (int)$limit;
+        $this->revisionLimit = (int) $limit;
 
         return $this;
     }
