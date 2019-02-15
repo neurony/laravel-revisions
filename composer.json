@@ -1,0 +1,58 @@
+{
+    "name": "zbiller/laravel-revisions",
+    "description": "Create multiple revisions of any Eloquent model record along with its underlying relationships",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "revisions",
+        "eloquent",
+        "model",
+        "relations",
+        "changes",
+        "copy"
+    ],
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Andrei Badea",
+            "email": "zbiller@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "illuminate/contracts": "~5.7.0",
+        "illuminate/support": "~5.7.0",
+        "illuminate/database": "~5.7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.7.0",
+        "phpunit/phpunit": "~7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zbiller\\Revisions\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zbiller\\Revisions\\Tests\\": "tests"
+        },
+        "classmap": [
+            "tests/TestCase.php"
+        ]
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zbiller\\Revisions\\ServiceProvider"
+            ]
+        }
+    }
+}
