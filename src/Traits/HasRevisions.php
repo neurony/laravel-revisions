@@ -14,6 +14,9 @@ use Zbiller\Revisions\Options\RevisionOptions;
 
 trait HasRevisions
 {
+    use SaveRevisionJsonRepresentation;
+    use RollbackRevisionJsonRepresentation;
+
     /**
      * The container for all the options necessary for this trait.
      * Options can be viewed in the Zbiller\Revisions\Options\RevisionOptions file.
@@ -109,16 +112,7 @@ trait HasRevisions
                 return false;
             }
 
-            $revision = DB::transaction(function () {
-                $revision = $this->revisions()->create([
-                    'user_id' => auth()->id() ?: null,
-                    'metadata' => $this->buildRevisionData(),
-                ]);
-
-                $this->clearOldRevisions();
-
-                return $revision;
-            });
+            $revision = $this->saveAsRevision();
 
             $this->fireModelEvent('revisioned', false);
 
@@ -137,8 +131,10 @@ trait HasRevisions
      */
     public function saveAsRevision(): Revision
     {
+        $this->initRevisionOptions();
+
         try {
-            $revision = DB::transaction(function () {
+            return DB::transaction(function () {
                 $revision = $this->revisions()->create([
                     'user_id' => auth()->id() ?: null,
                     'metadata' => $this->buildRevisionData(),
@@ -148,8 +144,6 @@ trait HasRevisions
 
                 return $revision;
             });
-
-            return $revision;
         } catch (Exception $e) {
             throw $e;
         }
@@ -178,7 +172,7 @@ trait HasRevisions
 
                 $this->rollbackModelToRevision($revision);
 
-                if (isset($revision->metadata['relations'])) {
+                if ($revision instanceof RevisionModelContract && isset($revision->metadata['relations'])) {
                     foreach ($revision->metadata['relations'] as $relation => $attributes) {
                         if (RelationHelper::isDirect($attributes['type'])) {
                             $this->rollbackDirectRelationToRevision($relation, $attributes);
@@ -257,292 +251,6 @@ trait HasRevisions
         }
 
         return true;
-    }
-
-    /**
-     * Build the entire data array for further json insert into the revisions table.
-     *
-     * Extract the actual model's data.
-     * Extract all of the model's direct relations data.
-     * Extract all of the model's pivoted relations data.
-     *
-     * @return array
-     * @throws \ReflectionException
-     */
-    protected function buildRevisionData(): array
-    {
-        $data = $this->buildRevisionDataFromModel();
-
-        foreach ($this->getRelationsForRevision() as $relation => $attributes) {
-            if (RelationHelper::isDirect($attributes['type'])) {
-                $data['relations'][$relation] = $this->buildRevisionDataFromDirectRelation($relation, $attributes);
-            }
-
-            if (RelationHelper::isPivoted($attributes['type'])) {
-                $data['relations'][$relation] = $this->buildRevisionDataFromPivotedRelation($relation, $attributes);
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Get all the fields that should be revisioned from the model instance.
-     * Automatically unset primary and timestamp keys.
-     * Also count for revision fields if any are set on the model.
-     *
-     * @return array
-     */
-    protected function buildRevisionDataFromModel(): array
-    {
-        $this->initRevisionOptions();
-
-        $data = $this->wasRecentlyCreated === true ? $this->getAttributes() : $this->getOriginal();
-        $fields = $this->revisionOptions->revisionFields;
-
-        unset($data[$this->getKeyName()]);
-
-        if ($this->usesTimestamps()) {
-            unset($data[$this->getCreatedAtColumn()]);
-            unset($data[$this->getUpdatedAtColumn()]);
-        }
-
-        if ($fields && is_array($fields) && !empty($fields)) {
-            foreach ($data as $field => $value) {
-                if (!in_array($field, $fields)) {
-                    unset($data[$field]);
-                }
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Extract revisionable data from a model's relation.
-     * Extract the type, class and related records.
-     * Store the extracted data into an array to be json inserted into the revisions table.
-     *
-     * @param string $relation
-     * @param array $attributes
-     * @return array
-     */
-    protected function buildRevisionDataFromDirectRelation(string $relation, array $attributes = []): array
-    {
-        $data = [
-            'type' => $attributes['type'],
-            'class' => get_class($attributes['model']),
-            'records' => [
-                'primary_key' => null,
-                'foreign_key' => null,
-                'items' => [],
-            ],
-        ];
-
-        foreach ($this->{$relation}()->get() as $index => $model) {
-            if (!$data['records']['primary_key'] || !$data['records']['foreign_key']) {
-                $data['records']['primary_key'] = $model->getKeyName();
-                $data['records']['foreign_key'] = $this->getForeignKey();
-            }
-
-            foreach ($model->getOriginal() as $field => $value) {
-                if (array_key_exists($field, $model->getAttributes())) {
-                    $data['records']['items'][$index][$field] = $value;
-                }
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Extract revisionable data from a model's relation pivot table.
-     * Extract the type, class, related records and pivot values.
-     * Store the extracted data into an array to be json inserted into the revisions table.
-     *
-     * @param string $relation
-     * @param array $attributes
-     * @return array
-     */
-    protected function buildRevisionDataFromPivotedRelation(string $relation, array $attributes = []): array
-    {
-        $data = [
-            'type' => $attributes['type'],
-            'class' => get_class($attributes['model']),
-            'records' => [
-                'primary_key' => null,
-                'foreign_key' => null,
-                'items' => [],
-            ],
-            'pivots' => [
-                'primary_key' => null,
-                'foreign_key' => null,
-                'related_key' => null,
-                'items' => [],
-            ],
-        ];
-
-        foreach ($this->{$relation}()->get() as $index => $model) {
-            $pivot = $model->pivot;
-
-            foreach ($model->getOriginal() as $field => $value) {
-                if (!$data['records']['primary_key'] || !$data['records']['foreign_key']) {
-                    $data['records']['primary_key'] = $model->getKeyName();
-                    $data['records']['foreign_key'] = $this->getForeignKey();
-                }
-
-                if (array_key_exists($field, $model->getAttributes())) {
-                    $data['records']['items'][$index][$field] = $value;
-                }
-            }
-
-            foreach ($pivot->getOriginal() as $field => $value) {
-                if (!$data['pivots']['primary_key'] || !$data['pivots']['foreign_key'] || !$data['pivots']['related_key']) {
-                    $data['pivots']['primary_key'] = $pivot->getKeyName();
-                    $data['pivots']['foreign_key'] = $pivot->getForeignKey();
-                    $data['pivots']['related_key'] = $pivot->getRelatedKey();
-                }
-
-                if (array_key_exists($field, $pivot->getAttributes())) {
-                    $data['pivots']['items'][$index][$field] = $value;
-                }
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Only rollback the model instance to the given revision.
-     *
-     * Loop through the revision's data.
-     * If the revision's field name matches one from the model's attributes.
-     * Replace the value from the model's attribute with the one from the revision.
-     *
-     * @param RevisionModelContract $revision
-     * @return void
-     */
-    protected function rollbackModelToRevision(RevisionModelContract $revision): void
-    {
-        foreach ($revision->metadata as $field => $value) {
-            if (array_key_exists($field, $this->getAttributes())) {
-                $this->attributes[$field] = $value;
-            }
-        }
-
-        $this->save();
-    }
-
-    /**
-     * Only rollback the model's direct relations to the given revision.
-     *
-     * Loop through the stored revision's relation items.
-     * If the relation exists, then update it with the data from the revision.
-     * If the relation does not exist, then create a new one with the data from the revision.
-     *
-     * Please note that when creating a new relation, the primary key (id) will be the old one from the revision's data.
-     * This way, the correspondence between the model and it's relation is kept.
-     *
-     * @param string $relation
-     * @param array $attributes
-     * @return void
-     */
-    protected function rollbackDirectRelationToRevision(string $relation, array $attributes): void
-    {
-        foreach ($attributes['records']['items'] as $item) {
-            $related = $this->{$relation}();
-
-            if (array_key_exists(SoftDeletes::class, class_uses($this->{$relation}))) {
-                $related = $related->withTrashed();
-            }
-
-            $rel = $related->findOrNew($item[$attributes['records']['primary_key']] ?? null);
-
-            foreach ($item as $field => $value) {
-                $rel->attributes[$field] = $value;
-            }
-
-            if (array_key_exists(SoftDeletes::class, class_uses($rel))) {
-                $rel->{$rel->getDeletedAtColumn()} = null;
-            }
-
-            $rel->save();
-        }
-    }
-
-    /**
-     * Rollback a model's pivoted relations to the given revision.
-     *
-     * Loop through the stored revision's relation items.
-     * If the relation's related model exists, then leave it as is (maybe modified) because other records or entities might be using it.
-     * If the relation's related model does not exist, then create a new one with the data from the revision.
-     *
-     * Please note that when creating a new relation related instance, the primary key (id) will be the old one from the revision's data.
-     * This way, the correspondence between the model and it's relation is kept.
-     *
-     * Loop through the stored revision's relation pivots.
-     * Sync the model's pivot values with the ones from the revision.
-     *
-     * @param string $relation
-     * @param array $attributes
-     * @return void
-     */
-    protected function rollbackPivotedRelationToRevision(string $relation, array $attributes): void
-    {
-        foreach ($attributes['records']['items'] as $item) {
-            $related = $this->{$relation}()->getRelated();
-
-            if (array_key_exists(SoftDeletes::class, class_uses($related))) {
-                $related = $related->withTrashed();
-            }
-
-            $rel = $related->findOrNew($item[$attributes['records']['primary_key']] ?? null);
-
-            if ($rel->exists === false) {
-                foreach ($item as $field => $value) {
-                    $rel->attributes[$field] = $value;
-                }
-
-                $rel->save();
-            } if (array_key_exists(SoftDeletes::class, class_uses($rel))) {
-                $rel->{$rel->getDeletedAtColumn()} = null;
-                $rel->save();
-            }
-        }
-
-        $this->{$relation}()->detach();
-
-        foreach ($attributes['pivots']['items'] as $item) {
-            $this->{$relation}()->attach(
-                $item[$attributes['pivots']['related_key']],
-                array_except((array)$item, [
-                    $attributes['pivots']['primary_key'],
-                    $attributes['pivots']['foreign_key'],
-                    $attributes['pivots']['related_key'],
-                ])
-            );
-        }
-    }
-
-    /**
-     * Get the relations that should be revisionable alongside the original model.
-     *
-     * @return array
-     * @throws \ReflectionException
-     */
-    protected function getRelationsForRevision(): array
-    {
-        $this->initRevisionOptions();
-
-        $relations = [];
-
-        foreach (RelationHelper::getModelRelations($this) as $relation => $attributes) {
-            if (in_array($relation, $this->revisionOptions->revisionRelations)) {
-                $relations[$relation] = $attributes;
-            }
-        }
-
-        return $relations;
     }
 
     /**
