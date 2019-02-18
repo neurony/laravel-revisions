@@ -52,9 +52,9 @@ trait SaveRevisionJsonRepresentation
             unset($data[$this->getUpdatedAtColumn()]);
         }
 
-        if ($fields && is_array($fields) && !empty($fields)) {
+        if ($fields && is_array($fields) && ! empty($fields)) {
             foreach ($data as $field => $value) {
-                if (!in_array($field, $fields)) {
+                if (! in_array($field, $fields)) {
                     unset($data[$field]);
                 }
             }
@@ -185,7 +185,7 @@ trait SaveRevisionJsonRepresentation
      */
     protected function dataWithForeignKeys(array $data, string $primaryKey, string $foreignKey): array
     {
-        if (!$this->dataHasForeignKeys($data)) {
+        if (! $this->dataHasForeignKeys($data)) {
             $data['records']['primary_key'] = $primaryKey;
             $data['records']['foreign_key'] = $foreignKey;
         }
@@ -204,7 +204,7 @@ trait SaveRevisionJsonRepresentation
      */
     protected function dataWithPivotForeignKeys(array $data, string $primaryKey, string $foreignKey, string $relatedKey): array
     {
-        if (!$this->dataHasPivotForeignKeys($data)) {
+        if (! $this->dataHasPivotForeignKeys($data)) {
             $data['pivots']['primary_key'] = $primaryKey;
             $data['pivots']['foreign_key'] = $foreignKey;
             $data['pivots']['related_key'] = $relatedKey;

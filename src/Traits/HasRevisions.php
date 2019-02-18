@@ -4,13 +4,13 @@ namespace Zbiller\Revisions\Traits;
 
 use Closure;
 use Exception;
+use Illuminate\Support\Facades\DB;
+use Zbiller\Revisions\Models\Revision;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
-use Zbiller\Revisions\Contracts\RevisionModelContract;
 use Zbiller\Revisions\Helpers\RelationHelper;
-use Zbiller\Revisions\Models\Revision;
 use Zbiller\Revisions\Options\RevisionOptions;
+use Zbiller\Revisions\Contracts\RevisionModelContract;
 
 trait HasRevisions
 {
@@ -104,7 +104,7 @@ trait HasRevisions
         }
 
         try {
-            if (!$this->shouldCreateRevision()) {
+            if (! $this->shouldCreateRevision()) {
                 return false;
             }
 
@@ -246,7 +246,7 @@ trait HasRevisions
             return false;
         }
 
-        if ($fields && is_array($fields) && !empty($fields)) {
+        if ($fields && is_array($fields) && ! empty($fields)) {
             return $this->isDirty($fields);
         }
 

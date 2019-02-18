@@ -99,7 +99,8 @@ trait RollbackRevisionJsonRepresentation
                 }
 
                 $rel->save();
-            } if (array_key_exists(SoftDeletes::class, class_uses($rel))) {
+            }
+            if (array_key_exists(SoftDeletes::class, class_uses($rel))) {
                 $rel->{$rel->getDeletedAtColumn()} = null;
                 $rel->save();
             }
@@ -110,7 +111,7 @@ trait RollbackRevisionJsonRepresentation
         foreach ($attributes['pivots']['items'] as $item) {
             $this->{$relation}()->attach(
                 $item[$attributes['pivots']['related_key']],
-                array_except((array)$item, [
+                array_except((array) $item, [
                     $attributes['pivots']['primary_key'],
                     $attributes['pivots']['foreign_key'],
                     $attributes['pivots']['related_key'],
