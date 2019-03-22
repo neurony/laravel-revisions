@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-revisions` will be documented in this file
 
+## 2.1.0 - 2019/22/03
+
+- Support Laravel 5.8
+
 ## 2.0.0 - 2019/22/03
 
 - Transferred ownership to the [Neurony](https://github.com/Neurony) organisation
