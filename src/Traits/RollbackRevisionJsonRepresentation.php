@@ -3,6 +3,7 @@
 namespace Neurony\Revisions\Traits;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Neurony\Revisions\Contracts\RevisionModelContract;
 
 trait RollbackRevisionJsonRepresentation
@@ -111,7 +112,7 @@ trait RollbackRevisionJsonRepresentation
         foreach ($attributes['pivots']['items'] as $item) {
             $this->{$relation}()->attach(
                 $item[$attributes['pivots']['related_key']],
-                array_except((array) $item, [
+                Arr::except((array) $item, [
                     $attributes['pivots']['primary_key'],
                     $attributes['pivots']['foreign_key'],
                     $attributes['pivots']['related_key'],

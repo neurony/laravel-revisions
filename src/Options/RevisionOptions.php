@@ -3,6 +3,7 @@
 namespace Neurony\Revisions\Options;
 
 use Exception;
+use Illuminate\Support\Arr;
 
 class RevisionOptions
 {
@@ -107,7 +108,7 @@ class RevisionOptions
      */
     public function fieldsToRevision(...$fields): self
     {
-        $this->revisionFields = array_flatten($fields);
+        $this->revisionFields = Arr::flatten($fields);
 
         return $this;
     }
@@ -120,7 +121,7 @@ class RevisionOptions
      */
     public function relationsToRevision(...$relations): self
     {
-        $this->revisionRelations = array_flatten($relations);
+        $this->revisionRelations = Arr::flatten($relations);
 
         return $this;
     }

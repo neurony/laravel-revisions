@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-revisions` will be documented in this file
 
+## 2.1.1 - 2019/22/03
+
+- Replaced deprecated Laravel helper functions with their stable methods
+
 ## 2.1.0 - 2019/22/03
 
 - Support Laravel 5.8
