@@ -1,8 +1,8 @@
  # Create revisions for any Eloquent model along with its relationships   
-
-[![Build Status](https://travis-ci.org/zbiller/laravel-revisions.svg?branch=master)](https://travis-ci.org/zbiller/laravel-revisions)
+ 
+[![Build Status](https://travis-ci.org/Neurony/laravel-revisions.svg?branch=master)](https://travis-ci.org/Neurony/laravel-revisions)
 [![StyleCI](https://github.styleci.io/repos/170915589/shield?branch=master)](https://github.styleci.io/repos/170915589)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zbiller/laravel-revisions/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zbiller/laravel-revisions/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Neurony/laravel-revisions/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Neurony/laravel-revisions/?branch=master)
 
 - [Overview](#overview)   
 - [Installation](#installation)   
