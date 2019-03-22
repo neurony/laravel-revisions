@@ -1,6 +1,6 @@
 <?php
 
-namespace Zbiller\Revisions\Helpers;
+namespace Neurony\Revisions\Helpers;
 
 use SplFileObject;
 use ReflectionMethod;

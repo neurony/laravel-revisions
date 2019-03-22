@@ -1,9 +1,9 @@
 <?php
 
-namespace Zbiller\Revisions\Tests\Models;
+namespace Neurony\Revisions\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Zbiller\Revisions\Traits\HasRevisions;
+use Neurony\Revisions\Traits\HasRevisions;
 
 class Post extends Model
 {
@@ -65,10 +65,10 @@ class Post extends Model
     }
 
     /**
-     * @return \Zbiller\Revisions\Options\RevisionOptions
+     * @return \Neurony\Revisions\Options\RevisionOptions
      */
     public function getRevisionOptions()
     {
-        return \Zbiller\Revisions\Options\RevisionOptions::instance();
+        return \Neurony\Revisions\Options\RevisionOptions::instance();
     }
 }

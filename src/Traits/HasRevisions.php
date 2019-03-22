@@ -1,16 +1,16 @@
 <?php
 
-namespace Zbiller\Revisions\Traits;
+namespace Neurony\Revisions\Traits;
 
 use Closure;
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Zbiller\Revisions\Models\Revision;
+use Neurony\Revisions\Models\Revision;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Zbiller\Revisions\Helpers\RelationHelper;
-use Zbiller\Revisions\Options\RevisionOptions;
-use Zbiller\Revisions\Contracts\RevisionModelContract;
+use Neurony\Revisions\Helpers\RelationHelper;
+use Neurony\Revisions\Options\RevisionOptions;
+use Neurony\Revisions\Contracts\RevisionModelContract;
 
 trait HasRevisions
 {
@@ -19,7 +19,7 @@ trait HasRevisions
 
     /**
      * The container for all the options necessary for this trait.
-     * Options can be viewed in the Zbiller\Revisions\Options\RevisionOptions file.
+     * Options can be viewed in the Neurony\Revisions\Options\RevisionOptions file.
      *
      * @var RevisionOptions
      */

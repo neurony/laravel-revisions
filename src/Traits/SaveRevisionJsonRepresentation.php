@@ -1,8 +1,8 @@
 <?php
 
-namespace Zbiller\Revisions\Traits;
+namespace Neurony\Revisions\Traits;
 
-use Zbiller\Revisions\Helpers\RelationHelper;
+use Neurony\Revisions\Helpers\RelationHelper;
 
 trait SaveRevisionJsonRepresentation
 {

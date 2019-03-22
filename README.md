@@ -31,19 +31,19 @@ Relationship types that can be revisioned: `hasOne`, `morphOne`, `hasMany`, `mor
 Install the package via Composer:
 
 ```
-composer require zbiller/laravel-revisions
+composer require neurony/laravel-revisions
 ```
 
 Publish the config file with:
 
 ```
-php artisan vendor:publish --provider="Zbiller\Revisions\ServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Neurony\Revisions\ServiceProvider" --tag="config"
 ```
 
 Publish the migration file with:
 
 ```
-php artisan vendor:publish --provider="Zbiller\Revisions\ServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="Neurony\Revisions\ServiceProvider" --tag="migrations"
 ```
 
 After the migration has been published you can create the `revisions` table by running:
@@ -56,7 +56,7 @@ php artisan migrate
 
 ### Step 1
 
-Your Eloquent models should use the `Zbiller\Revisions\Traits\HasRevisions` trait and the `Zbiller\Revisions\Options\RevisionOptions` class.   
+Your Eloquent models should use the `Neurony\Revisions\Traits\HasRevisions` trait and the `Neurony\Revisions\Options\RevisionOptions` class.   
 
 The trait contains an abstract method `getRevisionOptions()` that you must implement yourself.   
 
@@ -68,8 +68,8 @@ Here's an example of how to implement the trait:
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Zbiller\Revisions\Options\RevisionOptions;
-use Zbiller\Revisions\Traits\HasRevisions;
+use Neurony\Revisions\Options\RevisionOptions;
+use Neurony\Revisions\Traits\HasRevisions;
 
 class YourModel extends Model
 {
@@ -93,13 +93,13 @@ Inside the `revisions.php` config file, write the full namespace of your `User` 
    
 By default, this value is the FQN of Laravel's `User` model class (`\App\User`). You can also leave this `NULL` if your application doesn't have the concept of users.   
    
-This bit is used by the `Zbiller\Revisions\Traits\HasRevisions` trait to know who created which revisions.
+This bit is used by the `Neurony\Revisions\Traits\HasRevisions` trait to know who created which revisions.
 
 # Usage
 
 ### Fetch revisions
 
-You can fetch a model record's revisions by using the `revisions()` morph to many relation present on the `Zbiller\Revisions\Traits\HasRevisions` trait.
+You can fetch a model record's revisions by using the `revisions()` morph to many relation present on the `Neurony\Revisions\Traits\HasRevisions` trait.
 
 ```php
 $model = YourModel::find($id);
@@ -109,7 +109,7 @@ $revisions = $model->revisions;
 
 ### Create revisions (automatically)
 
-Once you've used the `Zbiller\Revisions\Traits\HasRevisions` trait in your Eloquent models, each time you update a model record, a revision containing its original attribute values will be created automatically using the `updated` Eloquent event: 
+Once you've used the `Neurony\Revisions\Traits\HasRevisions` trait in your Eloquent models, each time you update a model record, a revision containing its original attribute values will be created automatically using the `updated` Eloquent event: 
 
 ```php
 // model is state 1
@@ -125,7 +125,7 @@ Alternatively, you can also store a revision each time you `create` a new model 
 
 ### Create revisions (manually)
 
-If you ever need it, you can also create a revision manually, by using the `saveAsRevision()` method from the `Zbiller\Revisions\Traits\HasRevisions` trait:
+If you ever need it, you can also create a revision manually, by using the `saveAsRevision()` method from the `Neurony\Revisions\Traits\HasRevisions` trait:
 
 ```php
 $model = YourModel::find($id);
@@ -259,8 +259,8 @@ You can implement these events in your Eloquent models as you would implement an
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Zbiller\Revisions\Options\RevisionOptions;
-use Zbiller\Revisions\Traits\HasRevisions;
+use Neurony\Revisions\Options\RevisionOptions;
+use Neurony\Revisions\Traits\HasRevisions;
 
 class YourModel extends Model
 {
@@ -296,9 +296,14 @@ class YourModel extends Model
 }
 ```
 
+# Credits
+
+- [Andrei Badea](https://github.com/zbiller)
+- [All Contributors](../../contributors)
+
 # Security
 
-If you discover any security related issues, please email zbiller@gmail.com instead of using the issue tracker.
+If you discover any security related issues, please email andrei.badea@neurony.ro instead of using the issue tracker.
 
 # License
 

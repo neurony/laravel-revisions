@@ -1,9 +1,9 @@
 <?php
 
-namespace Zbiller\Revisions\Traits;
+namespace Neurony\Revisions\Traits;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Zbiller\Revisions\Contracts\RevisionModelContract;
+use Neurony\Revisions\Contracts\RevisionModelContract;
 
 trait RollbackRevisionJsonRepresentation
 {

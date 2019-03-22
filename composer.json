@@ -1,5 +1,5 @@
 {
-    "name": "zbiller/laravel-revisions",
+    "name": "neurony/laravel-revisions",
     "description": "Create multiple revisions of any Eloquent model record along with its underlying relationships",
     "license": "MIT",
     "keywords": [
@@ -31,12 +31,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Zbiller\\Revisions\\": "src/"
+            "Neurony\\Revisions\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Zbiller\\Revisions\\Tests\\": "tests"
+            "Neurony\\Revisions\\Tests\\": "tests"
         },
         "classmap": [
             "tests/TestCase.php"
@@ -51,7 +51,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Zbiller\\Revisions\\ServiceProvider"
+                "Neurony\\Revisions\\ServiceProvider"
             ]
         }
     }

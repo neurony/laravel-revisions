@@ -1,12 +1,12 @@
 <?php
 
-namespace Zbiller\Revisions\Tests;
+namespace Neurony\Revisions\Tests;
 
-use Zbiller\Revisions\Models\Revision;
-use Zbiller\Revisions\Tests\Models\Tag;
-use Zbiller\Revisions\Tests\Models\Post;
-use Zbiller\Revisions\Tests\Models\Comment;
-use Zbiller\Revisions\Options\RevisionOptions;
+use Neurony\Revisions\Models\Revision;
+use Neurony\Revisions\Tests\Models\Tag;
+use Neurony\Revisions\Tests\Models\Post;
+use Neurony\Revisions\Tests\Models\Comment;
+use Neurony\Revisions\Options\RevisionOptions;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

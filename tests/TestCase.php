@@ -1,13 +1,13 @@
 <?php
 
-namespace Zbiller\Revisions\Tests;
+namespace Neurony\Revisions\Tests;
 
 use Carbon\Carbon;
-use Zbiller\Revisions\Tests\Models\Tag;
-use Zbiller\Revisions\Tests\Models\Post;
-use Zbiller\Revisions\Tests\Models\Reply;
-use Zbiller\Revisions\Tests\Models\Author;
-use Zbiller\Revisions\Tests\Models\Comment;
+use Neurony\Revisions\Tests\Models\Tag;
+use Neurony\Revisions\Tests\Models\Post;
+use Neurony\Revisions\Tests\Models\Reply;
+use Neurony\Revisions\Tests\Models\Author;
+use Neurony\Revisions\Tests\Models\Comment;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Illuminate\Contracts\Foundation\Application;
 

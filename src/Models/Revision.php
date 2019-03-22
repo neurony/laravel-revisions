@@ -1,11 +1,11 @@
 <?php
 
-namespace Zbiller\Revisions\Models;
+namespace Neurony\Revisions\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Zbiller\Revisions\Contracts\RevisionModelContract;
+use Neurony\Revisions\Contracts\RevisionModelContract;
 
 class Revision extends Model implements RevisionModelContract
 {
