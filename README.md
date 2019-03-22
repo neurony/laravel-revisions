@@ -28,10 +28,16 @@ Relationship types that can be revisioned: `hasOne`, `morphOne`, `hasMany`, `mor
 
 # Installation
 
-Install the package via Composer:
+Install the package via Composer (for **Laravel 5.8 and above**):
 
 ```
 composer require neurony/laravel-revisions
+```
+
+Install the package via Composer (for **Laravel 5.7 and below**):
+
+```
+composer require neurony/laravel-revisions:2.0.0
 ```
 
 Publish the config file with:
