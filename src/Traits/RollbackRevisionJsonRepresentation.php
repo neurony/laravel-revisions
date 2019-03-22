@@ -2,8 +2,8 @@
 
 namespace Neurony\Revisions\Traits;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Neurony\Revisions\Contracts\RevisionModelContract;
 
 trait RollbackRevisionJsonRepresentation
