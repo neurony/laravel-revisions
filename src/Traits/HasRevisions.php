@@ -253,7 +253,7 @@ trait HasRevisions
         }
 
         if ($fieldsToNotRevision && is_array($fieldsToNotRevision) && ! empty($fieldsToNotRevision)) {
-            return !empty(Arr::except($this->getDirty(), $fieldsToNotRevision));
+            return ! empty(Arr::except($this->getDirty(), $fieldsToNotRevision));
         }
 
         return true;
