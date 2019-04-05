@@ -213,6 +213,28 @@ public function getRevisionOptions(): RevisionOptions
 }
 ```
 
+### Exclude certain fields from being revisioned
+
+Opposed to the `fieldsToRevision()` method, if you want to exclude certain fields when making a revision of an Eloquent model, use the `fieldsToNotRevision()` method in your definition of the `getRevisionOptions()` method   
+   
+**Please note that the `fieldsToRevision()` takes precedence over the `fieldsToNotRevision()`.   
+Don't use both of these methods in the same definition of the `getRevisionOptions` method.**   
+  
+Please note that the fields omitted won't be stored when creating the revision, but when rolling back to a revision, those ignored fields will become null / empty for the actual model record.
+
+```php
+/**
+ * Get the options for revisioning the model.
+ *
+ * @return RevisionOptions
+ */
+public function getRevisionOptions(): RevisionOptions
+{
+    return RevisionOptions::instance()
+        ->fieldsToNotRevision('title', 'content');
+}
+```
+
 ### Revision relationships alongside the model record
 
 More often than not you will want to create a full copy in time of the model record and this includes revisioning its relations too (especially child relations).   
