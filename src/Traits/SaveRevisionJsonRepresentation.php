@@ -43,7 +43,9 @@ trait SaveRevisionJsonRepresentation
     protected function buildRevisionDataFromModel(): array
     {
         $data = $this->wasRecentlyCreated === true ? $this->getAttributes() : $this->getOriginal();
-        $fields = $this->revisionOptions->revisionFields;
+
+        $fieldsToRevision = $this->revisionOptions->revisionFields;
+        $fieldsToNotRevision = $this->revisionOptions->revisionNotFields;
 
         unset($data[$this->getKeyName()]);
 
@@ -52,9 +54,15 @@ trait SaveRevisionJsonRepresentation
             unset($data[$this->getUpdatedAtColumn()]);
         }
 
-        if ($fields && is_array($fields) && ! empty($fields)) {
+        if ($fieldsToRevision && is_array($fieldsToRevision) && ! empty($fieldsToRevision)) {
             foreach ($data as $field => $value) {
-                if (! in_array($field, $fields)) {
+                if (! in_array($field, $fieldsToRevision)) {
+                    unset($data[$field]);
+                }
+            }
+        } elseif ($fieldsToNotRevision && is_array($fieldsToNotRevision) && ! empty($fieldsToNotRevision)) {
+            foreach ($data as $field => $value) {
+                if (in_array($field, $fieldsToNotRevision)) {
                     unset($data[$field]);
                 }
             }

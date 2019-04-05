@@ -4,6 +4,7 @@ namespace Neurony\Revisions\Traits;
 
 use Closure;
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Neurony\Revisions\Models\Revision;
 use Illuminate\Database\Eloquent\Model;
@@ -237,7 +238,8 @@ trait HasRevisions
     {
         $this->initRevisionOptions();
 
-        $fields = $this->revisionOptions->revisionFields;
+        $fieldsToRevision = $this->revisionOptions->revisionFields;
+        $fieldsToNotRevision = $this->revisionOptions->revisionNotFields;
 
         if (
             array_key_exists(SoftDeletes::class, class_uses($this)) &&
@@ -246,8 +248,12 @@ trait HasRevisions
             return false;
         }
 
-        if ($fields && is_array($fields) && ! empty($fields)) {
-            return $this->isDirty($fields);
+        if ($fieldsToRevision && is_array($fieldsToRevision) && ! empty($fieldsToRevision)) {
+            return $this->isDirty($fieldsToRevision);
+        }
+
+        if ($fieldsToNotRevision && is_array($fieldsToNotRevision) && ! empty($fieldsToNotRevision)) {
+            return !empty(Arr::except($this->getDirty(), $fieldsToNotRevision));
         }
 
         return true;

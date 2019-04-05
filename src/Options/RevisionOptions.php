@@ -31,6 +31,14 @@ class RevisionOptions
     private $revisionFields = [];
 
     /**
+     * The fields that should be excluded from revisioning.
+     * By default (null) no fields are excluded from revisioning.
+     *
+     * @var array
+     */
+    private $revisionNotFields = [];
+
+    /**
      * The model's relations that should be revisionable.
      * By default (null) none of the model's relations are revisionable.
      *
@@ -109,6 +117,19 @@ class RevisionOptions
     public function fieldsToRevision(...$fields): self
     {
         $this->revisionFields = Arr::flatten($fields);
+
+        return $this;
+    }
+
+    /**
+     * Set the $revisionNotFields to work with in the Neurony\Revisions\Traits\HasRevisions trait.
+     *
+     * @param $fields
+     * @return RevisionOptions
+     */
+    public function fieldsToNotRevision(...$fields): self
+    {
+        $this->revisionNotFields = Arr::flatten($fields);
 
         return $this;
     }
