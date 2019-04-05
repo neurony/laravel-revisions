@@ -172,6 +172,28 @@ class HasRevisionsTest extends TestCase
     }
 
     /** @test */
+    public function it_can_exclude_certain_fields_when_creating_a_revision()
+    {
+        $model = new class extends Post {
+            public function getRevisionOptions() : RevisionOptions
+            {
+                return parent::getRevisionOptions()->fieldsToNotRevision('name', 'votes');
+            }
+        };
+
+        $this->makeModels($model);
+        $this->modifyPost();
+
+        $revision = $this->post->revisions()->first();
+
+        $this->assertArrayNotHasKey('name', $revision->metadata);
+        $this->assertArrayNotHasKey('votes', $revision->metadata);
+        $this->assertArrayHasKey('slug', $revision->metadata);
+        $this->assertArrayHasKey('content', $revision->metadata);
+        $this->assertArrayHasKey('views', $revision->metadata);
+    }
+
+    /** @test */
     public function it_can_save_belongs_to_relations_when_creating_a_revision()
     {
         $model = new class extends Post {
