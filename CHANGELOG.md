@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-revisions` will be documented in this file
 
+## 3.0.1 - 2019/22/03
+
+- Added support for excluding certain fields when creating a revision.
+
 ## 3.0.0 - 2019/22/03
 
 - Support Laravel >= 5.8
