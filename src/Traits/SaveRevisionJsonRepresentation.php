@@ -135,7 +135,8 @@ trait SaveRevisionJsonRepresentation
         ];
 
         foreach ($this->{$relation}()->get() as $index => $model) {
-            $pivot = $model->pivot;
+            $accessor = $this->{$relation}()->getPivotAccessor();
+            $pivot = $model->{$accessor};
 
             foreach ($model->getOriginal() as $field => $value) {
                 $data = $this->dataWithForeignKeys(
