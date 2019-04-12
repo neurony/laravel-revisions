@@ -127,10 +127,10 @@ trait HasRevisions
      * Manually save a new revision for a model instance.
      * This method should be called manually only where and if needed.
      *
-     * @return Revision
+     * @return RevisionModelContract
      * @throws Exception
      */
-    public function saveAsRevision(): Revision
+    public function saveAsRevision(): RevisionModelContract
     {
         $this->initRevisionOptions();
 
