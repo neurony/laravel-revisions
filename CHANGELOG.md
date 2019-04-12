@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-revisions` will be documented in this file
 
+## 3.0.2 - 2019/12/04
+
+- Fixed relations with custom pivot accessors
+- Fixed `saveAsRevision()` method expecting default model return type 
+
 ## 3.0.1 - 2019/22/03
 
 - Added support for excluding certain fields when creating a revision.
