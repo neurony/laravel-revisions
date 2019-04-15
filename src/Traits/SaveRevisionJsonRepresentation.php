@@ -49,7 +49,7 @@ trait SaveRevisionJsonRepresentation
 
         unset($data[$this->getKeyName()]);
 
-        if ($this->usesTimestamps()) {
+        if ($this->usesTimestamps() && !$this->revisionOptions->revisionTimestamps) {
             unset($data[$this->getCreatedAtColumn()]);
             unset($data[$this->getUpdatedAtColumn()]);
         }
