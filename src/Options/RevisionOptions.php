@@ -56,6 +56,13 @@ class RevisionOptions
     private $createRevisionWhenRollingBack = true;
 
     /**
+     * Flag indicating whether to include timestamps in the revision.
+     *
+     * @var bool
+     */
+    private $revisionTimestamps = false;
+
+    /**
      * Get the value of a property of this class.
      *
      * @param $name
@@ -155,6 +162,18 @@ class RevisionOptions
     public function disableRevisioningWhenRollingBack(): self
     {
         $this->createRevisionWhenRollingBack = false;
+
+        return $this;
+    }
+
+    /**
+     * Enable the revisioning of timestamps.
+     *
+     * @return $this
+     */
+    public function withTimestamps()
+    {
+        $this->revisionTimestamps = true;
 
         return $this;
     }

@@ -194,6 +194,25 @@ class HasRevisionsTest extends TestCase
     }
 
     /** @test */
+    public function it_can_include_timestamps_when_creating_a_revision()
+    {
+        $model = new class extends Post {
+            public function getRevisionOptions() : RevisionOptions
+            {
+                return parent::getRevisionOptions()->withTimestamps();
+            }
+        };
+
+        $this->makeModels($model);
+        $this->modifyPost();
+
+        $revision = $this->post->revisions()->first();
+
+        $this->assertArrayHasKey('created_at', $revision->metadata);
+        $this->assertArrayHasKey('updated_at', $revision->metadata);
+    }
+
+    /** @test */
     public function it_can_save_belongs_to_relations_when_creating_a_revision()
     {
         $model = new class extends Post {
