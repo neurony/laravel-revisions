@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-revisions` will be documented in this file
 
+## 3.0.3 - 2019/16/04
+
+- Allow for revisions to contain timestamps
+ 
 ## 3.0.2 - 2019/12/04
 
 - Fixed relations with custom pivot accessors
