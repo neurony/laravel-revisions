@@ -235,6 +235,25 @@ public function getRevisionOptions(): RevisionOptions
 }
 ```
 
+### Include timestamps when creating a revision
+
+By default, when creating a revision, the actual model's timestamps are automatically excluded from the actual revision data.   
+   
+If you'd like to store the model's timestamps when creating a revision, please use the `withTimestamps()` method in your definition of the `getRevisionOptions()` method.
+
+```php
+/**
+ * Get the options for revisioning the model.
+ *
+ * @return RevisionOptions
+ */
+public function getRevisionOptions(): RevisionOptions
+{
+    return RevisionOptions::instance()
+        ->withTimestamps();
+}
+```
+
 ### Revision relationships alongside the model record
 
 More often than not you will want to create a full copy in time of the model record and this includes revisioning its relations too (especially child relations).   
