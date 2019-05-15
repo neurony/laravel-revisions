@@ -2,6 +2,7 @@
 
 namespace Neurony\Revisions\Tests;
 
+use Carbon\Carbon;
 use Neurony\Revisions\Models\Revision;
 use Neurony\Revisions\Tests\Models\Tag;
 use Neurony\Revisions\Tests\Models\Post;
@@ -378,6 +379,33 @@ class HasRevisionsTest extends TestCase
     }
 
     /** @test */
+    public function it_removes_extra_created_has_one_relations_when_rolling_back_to_a_revision()
+    {
+        $model = new class extends Post {
+            public function getRevisionOptions() : RevisionOptions
+            {
+                return parent::getRevisionOptions()->relationsToRevision('reply');
+            }
+        };
+
+        $this->makeModels($model);
+        $this->modifyPost();
+
+        $relatedCountForRevisionCheckpoint = $this->post->reply()->count();
+
+        $this->post->reply()->create([
+            'subject' => 'Extra reply subject',
+            'content' => 'Extra reply content',
+        ]);
+
+        $this->post->rollbackToRevision(
+            $this->post->revisions()->first()
+        );
+
+        $this->assertEquals($relatedCountForRevisionCheckpoint, $this->post->reply()->count());
+    }
+
+    /** @test */
     public function it_can_save_has_many_relations_when_creating_a_revision()
     {
         $model = new class extends Post {
@@ -475,6 +503,35 @@ class HasRevisionsTest extends TestCase
             $this->assertEquals('Comment content '.$i, $comment->content);
             $this->assertEquals(1, $comment->active);
         }
+    }
+
+    /** @test */
+    public function it_removes_extra_created_has_many_relations_when_rolling_back_to_a_revision()
+    {
+        $model = new class extends Post {
+            public function getRevisionOptions() : RevisionOptions
+            {
+                return parent::getRevisionOptions()->relationsToRevision('comments');
+            }
+        };
+
+        $this->makeModels($model);
+        $this->modifyPost();
+
+        $relatedCountForRevisionCheckpoint = $this->post->comments()->count();
+
+        $this->post->comments()->create([
+            'title' => 'Extra comment title',
+            'content' => 'Extra comment content',
+            'date' => Carbon::now(),
+            'active' => true,
+        ]);
+
+        $this->post->rollbackToRevision(
+            $this->post->revisions()->first()
+        );
+
+        $this->assertEquals($relatedCountForRevisionCheckpoint, $this->post->comments()->count());
     }
 
     /** @test */
