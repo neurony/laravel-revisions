@@ -4,8 +4,8 @@ namespace Neurony\Revisions\Traits;
 
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Neurony\Revisions\Contracts\RevisionModelContract;
 use Neurony\Revisions\Helpers\RelationHelper;
+use Neurony\Revisions\Contracts\RevisionModelContract;
 
 trait RollbackRevisionJsonRepresentation
 {
@@ -58,7 +58,7 @@ trait RollbackRevisionJsonRepresentation
 
             $extraRelated = array_diff($oldRelated, $currentRelated);
 
-            if (!empty($extraRelated)) {
+            if (! empty($extraRelated)) {
                 $this->{$relation}()->whereIn($relatedPrimaryKey, $extraRelated)->delete();
             }
         }
