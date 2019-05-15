@@ -260,7 +260,7 @@ More often than not you will want to create a full copy in time of the model rec
    
 You can specify what relations to be revisioned alongside the model record by using the `relationsToRevision()` method in your definition of the `getRevisionOptions()` method.   
    
-Please note that when rolling back the model record to a past revision, the specified relations will also be rolled back to their state when that revision happened (this includes re-creating a relation record from ground up, if it was force deleted along the way).
+Please note that when rolling back the model record to a past revision, the specified relations will also be rolled back to their state when that revision happened (this includes re-creating a relation record from ground up if it was force deleted along the way, or deleting any future added related records up until the revision checkpoint).
 
 ```php
 /**
