@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-revisions` will be documented in this file
 
+## 3.1.0 - 2019/15/05
+
+- Delete future added child related records when rolling back
+
 ## 3.0.3 - 2019/16/04
 
 - Allow for revisions to contain timestamps
