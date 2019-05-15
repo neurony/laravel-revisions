@@ -5,6 +5,7 @@ namespace Neurony\Revisions\Traits;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Neurony\Revisions\Contracts\RevisionModelContract;
+use Neurony\Revisions\Helpers\RelationHelper;
 
 trait RollbackRevisionJsonRepresentation
 {
@@ -45,14 +46,32 @@ trait RollbackRevisionJsonRepresentation
      */
     protected function rollbackDirectRelationToRevision(string $relation, array $attributes): void
     {
-        foreach ($attributes['records']['items'] as $item) {
+        $relatedPrimaryKey = $attributes['records']['primary_key'];
+        $relatedRecords = $attributes['records']['items'];
+
+        // delete extra added child related records after the revision checkpoint
+        if (RelationHelper::isChild($attributes['type'])) {
+            $oldRelated = $this->{$relation}()->pluck($relatedPrimaryKey)->toArray();
+            $currentRelated = array_map(function ($item) use ($relatedPrimaryKey) {
+                return $item[$relatedPrimaryKey];
+            }, $relatedRecords);
+
+            $extraRelated = array_diff($oldRelated, $currentRelated);
+
+            if (!empty($extraRelated)) {
+                $this->{$relation}()->whereIn($relatedPrimaryKey, $extraRelated)->delete();
+            }
+        }
+
+        // rollback each related record to its revision checkpoint
+        foreach ($relatedRecords as $item) {
             $related = $this->{$relation}();
 
             if (array_key_exists(SoftDeletes::class, class_uses($this->{$relation}))) {
                 $related = $related->withTrashed();
             }
 
-            $rel = $related->findOrNew($item[$attributes['records']['primary_key']] ?? null);
+            $rel = $related->findOrNew($item[$relatedPrimaryKey] ?? null);
 
             foreach ($item as $field => $value) {
                 $rel->attributes[$field] = $value;
