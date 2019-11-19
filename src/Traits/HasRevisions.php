@@ -4,14 +4,14 @@ namespace Neurony\Revisions\Traits;
 
 use Closure;
 use Exception;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Neurony\Revisions\Models\Revision;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Neurony\Revisions\Helpers\RelationHelper;
-use Neurony\Revisions\Options\RevisionOptions;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Neurony\Revisions\Contracts\RevisionModelContract;
+use Neurony\Revisions\Helpers\RelationHelper;
+use Neurony\Revisions\Models\Revision;
+use Neurony\Revisions\Options\RevisionOptions;
 
 trait HasRevisions
 {

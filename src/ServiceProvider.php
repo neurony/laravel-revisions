@@ -2,12 +2,12 @@
 
 namespace Neurony\Revisions;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
-use Neurony\Revisions\Models\Revision;
-use Illuminate\Contracts\Foundation\Application;
-use Neurony\Revisions\Contracts\RevisionModelContract;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Neurony\Revisions\Contracts\RevisionModelContract;
+use Neurony\Revisions\Models\Revision;
 
 class ServiceProvider extends BaseServiceProvider
 {
