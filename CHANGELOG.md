@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-revisions` will be documented in this file
 
+## 4.0.0 - 2019/13/11
+
+- Support Laravel 6.0
+
 ## 3.1.0 - 2019/15/05
 
 - Delete future added child related records when rolling back
