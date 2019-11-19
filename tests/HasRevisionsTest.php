@@ -3,15 +3,15 @@
 namespace Neurony\Revisions\Tests;
 
 use Carbon\Carbon;
-use Neurony\Revisions\Models\Revision;
-use Neurony\Revisions\Tests\Models\Tag;
-use Neurony\Revisions\Tests\Models\Post;
-use Neurony\Revisions\Tests\Models\Comment;
-use Neurony\Revisions\Options\RevisionOptions;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Neurony\Revisions\Models\Revision;
+use Neurony\Revisions\Options\RevisionOptions;
+use Neurony\Revisions\Tests\Models\Comment;
+use Neurony\Revisions\Tests\Models\Post;
+use Neurony\Revisions\Tests\Models\Tag;
 
 class HasRevisionsTest extends TestCase
 {
