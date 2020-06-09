@@ -12,6 +12,7 @@
         "copy"
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Andrei Badea",
@@ -20,14 +21,14 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "illuminate/contracts": "^6.0",
-        "illuminate/support": "^6.0",
-        "illuminate/database": "^6.0"
+        "php": "^7.2.5",
+        "illuminate/contracts": "^7.0",
+        "illuminate/support": "^7.0",
+        "illuminate/database": "^7.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0",
-        "phpunit/phpunit": "~7.0|^8.0"
+        "orchestra/testbench": "^5.0",
+        "phpunit/phpunit": "^8.5"
     },
     "autoload": {
         "psr-4": {
