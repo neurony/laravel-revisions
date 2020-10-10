@@ -1,4 +1,18 @@
- # Create revisions for any Eloquent model along with its relationships   
+# Package discontinued! Check out VARBOX.IO instead.
+
+Unfortunately this package is now discontinued.   
+Please check out [Varbox](https://varbox.io) (Laravel Admin Panel) for this functionality and much more.
+
+- Buy: [https://varbox.io/buy](https://varbox.io/buy)
+- Docs: [https://varbox.io/docs](https://varbox.io/docs)
+- Demo: [https://demo.varbox.test/admin](https://demo.varbox.test/admin)
+- Repo [https://github.com/VarboxInternational/varbox](https://github.com/VarboxInternational/varbox)
+
+Thank you! 
+
+---
+
+### Create revisions for any Eloquent model along with its relationships   
  
 [![Build Status](https://travis-ci.org/Neurony/laravel-revisions.svg?branch=master)](https://travis-ci.org/Neurony/laravel-revisions)
 [![StyleCI](https://github.styleci.io/repos/170915589/shield?branch=master)](https://github.styleci.io/repos/170915589)
@@ -11,7 +25,7 @@
 - [Customisations](#customisations)   
 - [Events](#events)   
 
-# Overview
+### Overview
 
 This package allows you to create revisions for any Eloquent model record along with its underlying relationships.    
    
@@ -26,7 +40,7 @@ As already mentioned, this package is capable of revisioning entire relationship
    
 Relationship types that can be revisioned: `hasOne`, `morphOne`, `hasMany`, `morphMany`, `belongsToMany`, `morphToMany`
 
-# Installation
+### Installation
 
 Install the package via Composer (for **Laravel 6.0 and above**):
 
@@ -64,9 +78,9 @@ After the migration has been published you can create the `revisions` table by r
 php artisan migrate
 ```
 
-# Setup
+### Setup
 
-### Step 1
+##### Step 1
 
 Your Eloquent models should use the `Neurony\Revisions\Traits\HasRevisions` trait and the `Neurony\Revisions\Options\RevisionOptions` class.   
 
@@ -99,7 +113,7 @@ class YourModel extends Model
 }
 ```
 
-### Step 2
+##### Step 2
 
 Inside the `revisions.php` config file, write the full namespace of your `User` model class for the `user_model` config key.   
    
@@ -107,9 +121,9 @@ By default, this value is the FQN of Laravel's `User` model class (`\App\User`).
    
 This bit is used by the `Neurony\Revisions\Traits\HasRevisions` trait to know who created which revisions.
 
-# Usage
+### Usage
 
-### Fetch revisions
+##### Fetch revisions
 
 You can fetch a model record's revisions by using the `revisions()` morph to many relation present on the `Neurony\Revisions\Traits\HasRevisions` trait.
 
@@ -119,7 +133,7 @@ $model = YourModel::find($id);
 $revisions = $model->revisions;
 ```
 
-### Create revisions (automatically)
+##### Create revisions (automatically)
 
 Once you've used the `Neurony\Revisions\Traits\HasRevisions` trait in your Eloquent models, each time you update a model record, a revision containing its original attribute values will be created automatically using the `updated` Eloquent event: 
 
@@ -135,7 +149,7 @@ $model->update(...);
 Alternatively, you can also store a revision each time you `create` a new model record, by using the `created` Eloquent event   
 (see [Customisations](#customisations))
 
-### Create revisions (manually)
+##### Create revisions (manually)
 
 If you ever need it, you can also create a revision manually, by using the `saveAsRevision()` method from the `Neurony\Revisions\Traits\HasRevisions` trait:
 
@@ -147,7 +161,7 @@ $model = YourModel::find($id);
 $model->saveAsRevision();
 ```
 
-### Rollback to a past revision
+##### Rollback to a past revision
 
 You can rollback the model record to one of its past revisions by using the `rollbackToRevision()` method.
 
@@ -160,9 +174,9 @@ $revision = $model->revisions()->latest()->first();
 $model->rollbackToRevision($revision);
 ```
 
-# Customisations
+### Customisations
 
-### Enable revisioning on create
+##### Enable revisioning on create
 
 By default, when creating a new model record, a revision will not be created, because the record is fresh and it's at its first state. However, if you wish to create a revision when creating the model record, you can do so by using the `enableRevisionOnCreate()` method in your definition of the `getRevisionOptions()` method.
 
@@ -179,7 +193,7 @@ public function getRevisionOptions(): RevisionOptions
 }
 ```
 
-### Limit the revisions
+##### Limit the revisions
 
 You can limit the number of revisions each model record can have by using the `limitRevisionsTo()` method in your definition of the `getRevisionOptions()` method.   
    
@@ -200,7 +214,7 @@ public function getRevisionOptions(): RevisionOptions
 }
 ```
 
-### Revision only certain fields
+##### Revision only certain fields
 
 If you don't want to revision all the model's fields (attributes), you can manually specify which fields you wish to store when creating a new revision, by using the `fieldsToRevision()` method in your definition of the `getRevisionOptions()` method.   
    
@@ -219,7 +233,7 @@ public function getRevisionOptions(): RevisionOptions
 }
 ```
 
-### Exclude certain fields from being revisioned
+##### Exclude certain fields from being revisioned
 
 Opposed to the `fieldsToRevision()` method, if you want to exclude certain fields when making a revision of an Eloquent model, use the `fieldsToNotRevision()` method in your definition of the `getRevisionOptions()` method   
    
@@ -241,7 +255,7 @@ public function getRevisionOptions(): RevisionOptions
 }
 ```
 
-### Include timestamps when creating a revision
+##### Include timestamps when creating a revision
 
 By default, when creating a revision, the actual model's timestamps are automatically excluded from the actual revision data.   
    
@@ -260,7 +274,7 @@ public function getRevisionOptions(): RevisionOptions
 }
 ```
 
-### Revision relationships alongside the model record
+##### Revision relationships alongside the model record
 
 More often than not you will want to create a full copy in time of the model record and this includes revisioning its relations too (especially child relations).   
    
@@ -281,7 +295,7 @@ public function getRevisionOptions(): RevisionOptions
 }
 ```
 
-### Disable creating a revision when rolling back
+##### Disable creating a revision when rolling back
 
 By default, when rolling back to a past revision, a new revision is automatically created. This new revision contains the model record's state before the rollback happened.   
    
@@ -300,7 +314,7 @@ public function getRevisionOptions(): RevisionOptions
 }
 ```
 
-# Events
+### Events
 
 The revision functionality comes packed with two Eloquent events: `revisioning` and `revisioned`   
    
@@ -349,23 +363,23 @@ class YourModel extends Model
 }
 ```
 
-# Credits
+### Credits
 
 - [Andrei Badea](https://github.com/zbiller)
 - [All Contributors](../../contributors)
 
-# Security
+### Security
 
 If you discover any security related issues, please email andrei.badea@neurony.ro instead of using the issue tracker.
 
-# License
+### License
 
 The MIT License (MIT). Please see [LICENSE](LICENSE.md) for more information.
 
-# Changelog
+### Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-# Contributing
+### Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
